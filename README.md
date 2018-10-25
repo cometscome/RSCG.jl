@@ -138,6 +138,8 @@ Inputs:
 Output:
 * `Gij[1:M]`: the matrix element Green's functions at M frequencies defined by ``\sigma_k``.
 
+greensfunctions(vec_left::Array{<:Integer,1},j::Integer,σ::Array{ComplexF64,1},A)
+
 Inputs:
 
 * `vec_left` :i indices of the Green's function
