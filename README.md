@@ -88,7 +88,7 @@ A2 = LinearMap(Al, n; ismutating=true,issymmetric=true)
 ```
 
 ### an element
-If we want to obtain the element $G_{ij}(σ_k)$,
+If we want to obtain the element ``G_{ij}(σ_k)``,
 
 ```julia
 i = 1
@@ -99,7 +99,7 @@ Gij2 = greensfunctions(i,j,σ,A2) #LinearMaps
 
 ### elements
 
-If we want to obtain the elements $G_{ij}(σ_k)$ with different i,
+If we want to obtain the elements ``G_{ij}(σ_k)`` with different i,
 
 ```julia
 vec_i = [1,4,8,43,98]
