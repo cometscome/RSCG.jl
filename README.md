@@ -14,10 +14,18 @@ The matrix should be symmetric or hermitian.
 
 We can use Arrays, LinearMaps, and SparseArrays.
 
-This package is written in Julia 1.0.
+This software is written in Julia 1.0.
+
+This software is released under the MIT License, see LICENSE.
+
+## Install
+
+```
+add https://github.com/cometscome/RSCG.jl
+```
 
 ## Example
-Let us obtain the Green' functions $G(z)$ on the complex plane.
+Let us obtain the Green' functions ``G(z)`` on the complex plane.
 
 ```julia
 M = 100
