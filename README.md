@@ -50,10 +50,10 @@ function make_mat(n)
     for i=1:n
         dx = 1
         jp = i+dx
-        jp += ifelse(jp > n,-n,0) #+1方向
+        jp += ifelse(jp > n,-n,0) #+1
         dx = -1
         jm = i+dx
-        jm += ifelse(jm < 1,n,0) #-1方向
+        jm += ifelse(jm < 1,n,0) #-1
         A[i,jp] = t
         A[i,i] = -μ
         A[i,jm] = t
@@ -78,10 +78,10 @@ function set_diff(v)
         for i=1:n
             dx = 1
             jp = i+dx
-            jp += ifelse(jp > n,-n,0) #+1方向
+            jp += ifelse(jp > n,-n,0) #+1
             dx = -1
             jm = i+dx
-            jm += ifelse(jm < 1,n,0) #-1方向
+            jm += ifelse(jm < 1,n,0) #-1
             y[i] = v*(x[jp]+x[jm])-μ*x[i]
         end
 
