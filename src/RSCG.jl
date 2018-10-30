@@ -98,7 +98,7 @@ module RSCG
         end
 
 
-        println("After $kmax steps, this was not converged")
+        println("After $maximumsteps steps, this was not converged")
         return Θ
 
     end

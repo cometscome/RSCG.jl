@@ -91,7 +91,6 @@ function test3(n,M)
 end
 
 function set_diff(v)
-
     function calc_diff!(y::AbstractVector, x::AbstractVector)
         n = length(x)
         length(y) == n || throw(DimensionMismatch())

@@ -117,6 +117,7 @@ vec_Gij2 = greensfunctions(vec_i,j,σ,A2) #LinearMaps
 ```
 
 
+
 ## Functions
 
 greensfunctions(i::Integer,j::Integer,σ::Array{ComplexF64,1},A)
