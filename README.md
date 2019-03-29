@@ -1,4 +1,6 @@
-https://travis-ci.org/cometscome/RSCG.jl.svg?branch=master
+[![Build Status](https://travis-ci.org/cometscome/RSCG.jl.svg?branch=master)](https://travis-ci.org/cometscome/RSCG.jl)
+
+[![Coverage Status](https://coveralls.io/repos/github/cometscome/RSCG.jl/badge.svg?branch=master)](https://coveralls.io/github/cometscome/RSCG.jl?branch=master)
 
 # RSCG.jl
 
