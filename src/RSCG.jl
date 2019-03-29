@@ -67,27 +67,26 @@ module RSCG
         for k=0:maximumsteps
             mul!(Ap,A,-p)
             #A_mul_B!(Ap,A,-p)
-            rnorm = r'*r
-            α = rnorm/(p'*Ap)
-            x += α*p #Line 7
-            r += -α*Ap #Line 8
+            rnorm = dot(r,r)
+            α = rnorm/dot(p,Ap)
+            @. x += α*p #Line 7
+            @. r += -α*Ap #Line 8
             β = r'*r/rnorm #Line9
-            p = r + β*p #Line 10
+            @. p = r + β*p #Line 10
 
             Σ[1] = r[i] #Line 11
 
             for j = 1:M
-                update = ifelse(abs(ρk[j]) > eps,true,false)
-                if update
+                if abs(ρk[j]) > eps
                     ρkp[j] = ρk[j]*ρkm[j]*αm/(ρkm[j]*αm*(1.0+α*σ[j])+α*βm*(ρkm[j]-ρk[j]))#Line 13
                     αkj = α*ρkp[j]/ρk[j]#Line 14
                     Θ[j] += αkj*Π[j,1] #Line 15
                     βkj = ((ρkp[j]/ρk[j])^2)*β #Line 16
                     Π[j,:] = ρkp[j]*Σ+ βkj*Π[j,:] #Line 17
-
+                    ρkm[j] = ρk[j]
+                    ρk[j] = ρkp[j]
                 end
-                ρkm[j] = ρk[j]
-                ρk[j] = ρkp[j]
+
             end
             αm = α
             βm = β
@@ -168,12 +167,12 @@ module RSCG
         for k=0:maximumsteps
             mul!(Ap,A,-p)
             #A_mul_B!(Ap,A,-p)
-            rnorm = r'*r
-            α = rnorm/(p'*Ap)
-            x += α*p #Line 7
-            r += -α*Ap #Line 8
+            rnorm = dot(r,r)
+            α = rnorm/dot(p,Ap)
+            @. x += α*p #Line 7
+            @. r += -α*Ap #Line 8
             β = r'*r/rnorm #Line9
-            p = r + β*p #Line 10
+            @. p = r + β*p #Line 10
 
             for mm=1:m
                 Σ[mm] = r[vec_left[mm]] #Line 11
@@ -184,7 +183,7 @@ module RSCG
                 if update
                     ρkp[j] = ρk[j]*ρkm[j]*αm/(ρkm[j]*αm*(1.0+α*σ[j])+α*βm*(ρkm[j]-ρk[j]))#Line 13
                     αkj = α*ρkp[j]/ρk[j]#Line 14
-                    Θ[j,:] += αkj*Π[j,:] #Line 15
+                    @. Θ[j,:] += αkj*Π[j,:] #Line 15
                     βkj = ((ρkp[j]/ρk[j])^2)*β #Line 16
                     Π[j,:] = ρkp[j]*Σ+ βkj*Π[j,:] #Line 17
 
