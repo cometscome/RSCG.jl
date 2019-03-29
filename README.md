@@ -3,7 +3,7 @@
 This package can calculate the elements of the Green's function:
 
 ```math
-G_{ij}(\sigma_k) = \left[ (\sigma_k I - A)^{-1} \right]_{ij},
+G_ij(σk) = ([σj I - A]^-1)_{ij},
 ```
 
 with the use of the reduced-shifted conjugate gradient method
