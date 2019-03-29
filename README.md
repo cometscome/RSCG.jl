@@ -1,3 +1,5 @@
+https://travis-ci.org/cometscome/RSCG.jl.svg?branch=master
+
 # RSCG.jl
 
 This package can calculate the elements of the Green's function:
