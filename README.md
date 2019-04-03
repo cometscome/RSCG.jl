@@ -25,7 +25,7 @@ This software is released under the MIT License, see LICENSE.
 ## Install
 
 ```
-add https://github.com/cometscome/RSCG.jl
+add RSCG
 ```
 
 ## Example
