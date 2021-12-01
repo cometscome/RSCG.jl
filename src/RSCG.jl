@@ -3,7 +3,7 @@ module RSCG
     using LinearMaps
     using SparseArrays
 
-    export greensfunctions
+    export greensfunctions,greensfunctions_col
 
     @doc raw"""
         greensfunctions(i::Integer,j::Integer,σ::Array{ComplexF64,1},A)
@@ -141,14 +141,14 @@ module RSCG
         b[j] = 1.0
         m = length(vec_left)
 
-    #--Line 2 in Table III.
+        #--Line 2 in Table III.
         x = zeros(atype,N)
         r = copy(b)
         p = copy(b)
         αm = 1.0
         βm = 0.0
 
-    #--
+        #--
         Σ =zeros(atype,m)
         for mm=1:m
             Σ[mm] = b[vec_left[mm]] #Line 3
@@ -202,6 +202,107 @@ module RSCG
 
         println("After $maximumsteps steps, this was not converged")
         return Θ
+
+    end
+
+    @doc raw"""
+    greensfunctions_col(j::Integer,σ::Array{ComplexF64,1},A)
+
+    Calculate the multiplication of the Green's function G and the vector b:
+    ```math
+
+    [G(\sigma_k) b]_i = \left[ (\sigma_k I - A)^{-1} b \right]_{i},
+    ```
+    with the use of the shifted conjugate gradient method
+    (See, Y. Nagai, Y. Shinohara, Y. Futamura, and T. Sakurai,[arXiv:1607.03992v2 or DOI:10.7566/JPSJ.86.014708]).
+    One can obtain ``[G(\sigma_k) b]_i`` with different frequencies ``\sigma_k``, simultaneously.
+
+    Inputs:
+
+    * `σ` :frequencies
+
+    * `A` :hermitian matrix. We can use Arrays,LinearMaps, SparseArrays
+
+    * `b` :input vector
+
+    * `eps` :residual (optional) Default:`1e-12`
+
+    * `maximumsteps` : maximum number of steps (optional) Default:`20000`
+
+    Output:
+    * `Gij[1:M,1:size(A)[1]]`: the matrix elements Green's functions of j-th col at M frequencies defined by ``\sigma_k``.
+"""
+    function greensfunctions_col(vec_σ,A,b;eps=1e-12,maximumsteps=20000)
+
+        M=length(vec_σ)
+        N=size(A,1)
+
+        #--Line 2 in Table III.
+        x = zero(b)
+        r = deepcopy(b)
+        p = deepcopy(b)
+        Ap = zero(b)
+        αm = 1.0
+        βm = 0.0
+
+        vec_x = Array{typeof(x),1}(undef,M)
+        vec_r = Array{typeof(x),1}(undef,M)
+        vec_p = Array{typeof(x),1}(undef,M)
+        ρm = ones(eltype(x),M)
+        ρ0 = deepcopy(ρm )
+        ρp = deepcopy(ρm )
+        for m=1:M
+            vec_x[m] = deepcopy(x)
+            vec_r[m] = deepcopy(b)
+            vec_p[m] = deepcopy(b)
+        end
+
+        for k=0:maximumsteps
+            mul!(Ap,A,p)
+            #A_mul_B!(Ap,A,-p)
+            rr = dot(r,r)
+            αk = -rr/dot(p,Ap)
+            mul!(x,1,p,αk,1) #x = x + α*p  #Line 7
+            mul!(r,-1,Ap,-αk,1) #r += -α*(-1)*Ap #Line 8
+            #@. x += α*p #Line 7
+            #@. r += -α*Ap #Line 8
+            βk = r'*r/rr #Line9
+            mul!(p,1,r,1,βk)  #@. p = r + β*p #Line 10
+            #@. p = r + β*p #Line 10
+
+            for j = 1:M
+                ρkj = ρ0[j]
+                if abs(ρkj) < eps
+                    continue
+                end
+
+                ρkmj =ρm[j]
+                ρp[j] = ρkj*ρkmj*αm/(ρkmj*αm*(1.0+αk*vec_σ[j])+αk*βm*(ρkmj-ρkj))
+                αkj = (ρp[j]/ρkj)*αk
+
+                mul!(vec_x[j],1,vec_p[j],αkj,1)
+                βkj = (ρp[j]/ρkj)^2*βk
+
+                mul!(vec_p[j],1,r,ρp[j],βkj)
+
+            end
+            @. ρm = ρ0
+            @. ρ0 = ρp
+            αm = αk
+            βm = βk
+            ρMAX = maximum(abs.(ρp))^2
+            hi = abs(rr*ρMAX)
+
+            if hi < eps
+                return vec_x
+            end
+
+
+        end
+
+
+        println("After $maximumsteps steps, this was not converged")
+        return vec_x
 
     end
 

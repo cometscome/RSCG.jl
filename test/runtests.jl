@@ -90,6 +90,31 @@ function test3(n,M)
     end
 end
 
+function testb(n,M)
+    σ = zeros(ComplexF64,M)
+    σmin = -4.0*im+0.2
+    σmax = 4.0*im -0.3
+    for i=1:M
+        σ[i] = (i-1)*(σmax-σmin)/(M-1) + σmin
+    end
+    A2 = make_matc(n)
+    j = div(n,2)
+    b = zeros(ComplexF64,2n)
+    b[j] = 1
+    Gij = greensfunctions_col(σ,A2,b)
+
+    Ii = spzeros(ComplexF64,2n,2n)
+    for ii=1:2n
+        Ii[ii,ii] = σ[div(M,2)]
+    end
+    Gb = inv(Matrix(Ii-A2))*b
+
+    for ii = 1:2n
+        println("Residual ",abs(Gb[ii]-Gij[div(M,2)][ii]) )
+        @test abs(Gb[ii]-Gij[div(M,2)][ii]) < 1e-7
+    end
+end
+
 function set_diff(v)
     function calc_diff!(y::AbstractVector, x::AbstractVector)
         n = length(x)
@@ -172,6 +197,14 @@ function make_matc(n)
     A2[1+n:2n,1:n] = Delta'[1:n,1:n]
 
     return A2
+end
+
+@testset "Gb" begin
+    M = 100
+    σ = zeros(M)
+    n = 10
+    println("n = $(n)")
+    @time testb(n,M)
 end
 
 @testset "SparseArrays" begin
