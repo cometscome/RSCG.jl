@@ -124,7 +124,7 @@ vec_Gij2 = greensfunctions(vec_i,j,σ,A2) #LinearMaps
 
 ## Functions
 
-greensfunctions(i::Integer,j::Integer,σ::Array{ComplexF64,1},A)
+```greensfunctions(i::Integer,j::Integer,σ::Array{ComplexF64,1},A)```
 
 Inputs:
 
@@ -143,7 +143,7 @@ Inputs:
 Output:
 * `Gij[1:M]`: the matrix element Green's functions at M frequencies defined by ``\sigma_k``.
 
-greensfunctions(vec_left::Array{<:Integer,1},j::Integer,σ::Array{ComplexF64,1},A)
+```greensfunctions(vec_left::Array{<:Integer,1},j::Integer,σ::Array{ComplexF64,1},A)```
 
 Inputs:
 
@@ -161,3 +161,21 @@ Inputs:
 
 Output:
 * `Gij[1:M,1:length(vec_left)]`: the matrix element Green's functions at M frequencies defined by ``\sigma_k``.
+
+
+```greensfunctions_col(j::Integer,σ::Array{ComplexF64,1},A)```
+
+Inputs:
+
+* `σ` :frequencies
+
+* `A` :hermitian matrix. We can use Arrays,LinearMaps, SparseArrays
+
+* `b` :input vector
+
+* `eps` :residual (optional) Default:`1e-12`
+
+* `maximumsteps` : maximum number of steps (optional) Default:`20000`
+
+Output:
+* `Gij[1:M,1:size(A)[1]]`: the matrix elements Green's functions of j-th col at M frequencies defined by ``\sigma_k``.
