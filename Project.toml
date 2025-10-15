@@ -1,7 +1,7 @@
 name = "RSCG"
 uuid = "4e41d8b6-e438-5f9c-8b78-0c738ca8d379"
 authors = ["Yuki Nagai <cometscome@gmail.com>"]
-version = "0.1.3"
+version = "0.1.4"
 
 [deps]
 LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"

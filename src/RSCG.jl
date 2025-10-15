@@ -33,7 +33,7 @@ Inputs:
 Output:
 * `Gij[1:M]`: the matrix element Green's functions at M frequencies defined by ``\sigma_k``.
 """
-function greensfunctions(i::Integer, j::Integer, σ, A; eps=1e-12, maximumsteps=20000)
+function greensfunctions(i::Integer, j::Integer, σ, A; eps=1e-12, maximumsteps=20000, verbose=false)
 
     M = length(σ)
     N = size(A, 1)
@@ -91,6 +91,9 @@ function greensfunctions(i::Integer, j::Integer, σ, A; eps=1e-12, maximumsteps=
         αm = α
         βm = β
         hi = real(rnorm) * maximum(abs.(ρk))
+        if verbose
+            println("$k-th step: residual: $hi")
+        end
         if hi < eps
             return Θ
         end
@@ -131,7 +134,7 @@ Inputs:
 Output:
 * `Gij[1:M,1:length(vec_left)]`: the matrix element Green's functions at M frequencies defined by ``\sigma_k``.
 """
-function greensfunctions(vec_left::Array{<:Integer,1}, j::Integer, σ, A; eps=1e-12, maximumsteps=20000)
+function greensfunctions(vec_left::Array{<:Integer,1}, j::Integer, σ, A; eps=1e-12, maximumsteps=20000, verbose=false)
 
     M = length(σ)
     N = size(A, 1)
@@ -194,6 +197,9 @@ function greensfunctions(vec_left::Array{<:Integer,1}, j::Integer, σ, A; eps=1e
         αm = α
         βm = β
         hi = real(rnorm) * maximum(abs.(ρk))
+        if verbose
+            println("$k-th step: residual: $hi")
+        end
         if hi < eps
             return Θ
         end
@@ -232,7 +238,7 @@ end
     Output:
     * `Gij[1:M,1:size(A)[1]]`: the matrix elements Green's functions of j-th col at M frequencies defined by ``\sigma_k``.
 """
-function greensfunctions_col(vec_σ, A, b; eps=1e-12, maximumsteps=20000)
+function greensfunctions_col(vec_σ, A, b; eps=1e-12, maximumsteps=20000, verbose=false)
 
     M = length(vec_σ)
     N = size(A, 1)
@@ -292,6 +298,9 @@ function greensfunctions_col(vec_σ, A, b; eps=1e-12, maximumsteps=20000)
         βm = βk
         ρMAX = maximum(abs.(ρp))^2
         hi = abs(rr * ρMAX)
+        if verbose
+            println("$k-th step: residual: $hi")
+        end
 
         if hi < eps
             return vec_x
