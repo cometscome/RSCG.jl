@@ -7,7 +7,7 @@
 This package can calculate the elements of the Green's function:
 
 ```math
-G_ij(σk) = ([σj I - A]^-1)_{ij},
+G_{ij}(σk) = ([σ_j I - A]^{-1})_{ij},
 ```
 
 with the use of the reduced-shifted conjugate gradient method
